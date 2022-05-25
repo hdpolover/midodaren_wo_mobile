@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "62841389639",
+    "project_id": "midodaren-app-f1485",
+    "storage_bucket": "midodaren-app-f1485.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:62841389639:android:c7863671db7bf9f5e26762",
+        "android_client_info": {
+          "package_name": "com.midodaren.midodaren_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "62841389639-b8ngfag3d1cjjd8h4s6ikgsvgsnrj2v3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjP6ZuY6Phot9fJfqoWHyg3OgDKs1eyaw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "62841389639-b8ngfag3d1cjjd8h4s6ikgsvgsnrj2v3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
