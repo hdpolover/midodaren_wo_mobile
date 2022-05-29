@@ -137,27 +137,6 @@ class _DashboardState extends State<Dashboard> {
         margin: const EdgeInsets.all(0.0),
         popActionScreens: PopActionScreensType.all,
         bottomScreenMargin: 0.0,
-        onWillPop: (context) async {
-          await showDialog(
-            context: context!,
-            useSafeArea: true,
-            builder: (context) => Container(
-              height: 50.0,
-              width: 50.0,
-              color: Colors.white,
-              child: ElevatedButton(
-                child: const Text("Keluar aplikasi"),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          );
-          return false;
-        },
-        selectedTabScreenContext: (context) {
-          var testContext = context;
-        },
         hideNavigationBar: _hideNavBar,
         popAllScreensOnTapOfSelectedTab: true,
         itemAnimationProperties: ItemAnimationProperties(

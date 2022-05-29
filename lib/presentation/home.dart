@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:midodaren_wo_mobile/presentation/widgets/service_widget.dart';
 import 'package:midodaren_wo_mobile/resources/color_manager.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -76,35 +77,165 @@ class _HomeState extends State<Home> {
         .toList();
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: ColorManager.primary,
-        title: const Text("Midodaren WO"),
-        centerTitle: true,
-      ),
-      body: Column(
-        children: [
-          const SizedBox(height: 10),
-          CarouselSlider(
-            options: CarouselOptions(
-              autoPlay: true,
-              aspectRatio: 2.0,
-              enlargeCenterPage: true,
-              enlargeStrategy: CenterPageEnlargeStrategy.height,
+      body: SafeArea(
+        child: ListView(
+          children: [
+            Stack(
+              children: [
+                Container(
+                  height: MediaQuery.of(context).size.height * 0.45,
+                  width: MediaQuery.of(context).size.width,
+                  color: ColorManager.primary,
+                ),
+                Column(
+                  children: [
+                    const Image(
+                      width: 200,
+                      height: 100,
+                      image: AssetImage('assets/logo_tulisan.png'),
+                    ),
+                    CarouselSlider(
+                      options: CarouselOptions(
+                        autoPlay: true,
+                        aspectRatio: 2.0,
+                        enlargeCenterPage: true,
+                        enlargeStrategy: CenterPageEnlargeStrategy.height,
+                      ),
+                      items: imageSliders,
+                    ),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 15, left: 10),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                horizontalTitleGap: 0,
+                                leading: Icon(
+                                  Icons.satellite,
+                                  color: ColorManager.primary,
+                                ),
+                                title: const Text("Layanan"),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ServiceWidget(
+                                    image: "assets/couple.png",
+                                    name: "Paket Wedding",
+                                  ),
+                                  ServiceWidget(
+                                    image: "assets/consultant-services.png",
+                                    name: "Konsultasi",
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 15, left: 10),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              ListTile(
+                                horizontalTitleGap: 0,
+                                leading: Icon(
+                                  Icons.category,
+                                  color: ColorManager.primary,
+                                ),
+                                title: const Text("Vendor"),
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ServiceWidget(
+                                    image: "assets/museum.png",
+                                    name: "Venue",
+                                  ),
+                                  ServiceWidget(
+                                    image: "assets/garland.png",
+                                    name: "Dekorasi",
+                                  ),
+                                  ServiceWidget(
+                                    image: "assets/dish.png",
+                                    name: "Catering",
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ServiceWidget(
+                                    image: "assets/makeup.png",
+                                    name: "MUA",
+                                  ),
+                                  ServiceWidget(
+                                    image: "assets/master-of-ceremonies.png",
+                                    name: "MC",
+                                  ),
+                                  ServiceWidget(
+                                    image: "assets/photo-camera.png",
+                                    name: "Fotografer",
+                                  ),
+                                ],
+                              ),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  ServiceWidget(
+                                    image: "assets/henna.png",
+                                    name: "Hena",
+                                  ),
+                                ],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.only(bottom: 15, left: 10),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                horizontalTitleGap: 0,
+                                leading: Icon(
+                                  Icons.star,
+                                  color: ColorManager.primary,
+                                ),
+                                title: const Text("Ulasan"),
+                              ),
+                              Row(
+                                children: [],
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 80),
+                  ],
+                ),
+              ],
             ),
-            items: imageSliders,
-          ),
-          // Center(
-          //   child: ElevatedButton(
-          //     onPressed: () {
-          //       Navigator.pop(context);
-          //     },
-          //     child: Text(
-          //       "Go Back to Second Screen",
-          //       style: TextStyle(color: Colors.white),
-          //     ),
-          //   ),
-          // ),
-        ],
+          ],
+        ),
       ),
     );
   }

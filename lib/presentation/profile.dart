@@ -1,17 +1,42 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:midodaren_wo_mobile/models/user.dart';
+import 'package:midodaren_wo_mobile/presentation/edit_profile.dart';
 import 'package:midodaren_wo_mobile/resources/color_manager.dart';
+import 'package:midodaren_wo_mobile/shared_methods.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
   final BuildContext menuScreenContext;
   final Function onScreenHideButtonPressed;
   final bool hideStatus;
+
   const Profile(
       {Key? key,
       required this.menuScreenContext,
       required this.onScreenHideButtonPressed,
       this.hideStatus = false})
       : super(key: key);
+
+  @override
+  State<Profile> createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  AppUser? currentUser;
+  final SharedMethods _sharedMethods = SharedMethods();
+
+  @override
+  void initState() {
+    super.initState();
+
+    getUser();
+  }
+
+  void getUser() async {
+    currentUser = await _sharedMethods.getUserDetails();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -24,30 +49,43 @@ class Profile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 30),
           child: SafeArea(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const SizedBox(height: 20),
                 Row(
                   children: [
                     CircleAvatar(
                       radius: 40,
-                      backgroundColor: Colors.white,
-                      child: ClipOval(
-                        child: CachedNetworkImage(
-                          imageUrl:
-                              'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-                          placeholder: (context, url) =>
-                              const CircularProgressIndicator(),
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                        ),
-                      ),
+                      backgroundColor: Colors.transparent,
+                      backgroundImage: NetworkImage(
+                          'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80'),
                     ),
                     const SizedBox(width: 22),
-                    Text(
-                      "Nama user",
-                      style: Theme.of(context).textTheme.headline6?.copyWith(
-                            color: Colors.white,
-                          ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          currentUser?.fullName ?? "Nama Lengkap",
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              Theme.of(context).textTheme.headline6?.copyWith(
+                                    color: Colors.white,
+                                  ),
+                        ),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(
+                          currentUser?.email ?? "Email",
+                          overflow: TextOverflow.ellipsis,
+                          style:
+                              Theme.of(context).textTheme.headline6?.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 13,
+                                  ),
+                        ),
+                      ],
                     ),
                   ],
                 ),
@@ -58,16 +96,15 @@ class Profile extends StatelessWidget {
       ),
       body: Column(
         children: [
-          SizedBox(height: 10),
+          const SizedBox(height: 10),
           ListTile(
             onTap: () {
-// Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => PersonalInformationWidget(
-              //         widget.currentCustomer),
-              //   ),
-              // );
+              pushNewScreen(
+                context,
+                screen: EditProfile(),
+                withNavBar: false, // OPTIONAL VALUE. True by default.
+                pageTransitionAnimation: PageTransitionAnimation.fade,
+              );
             },
             leading: const Icon(Icons.edit),
             title: const Text("Edit Profil"),
@@ -78,13 +115,11 @@ class Profile extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-// Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => PersonalInformationWidget(
-              //         widget.currentCustomer),
-              //   ),
-              // );
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditProfile(),
+                  ));
             },
             leading: const Icon(Icons.rate_review),
             title: const Text("Ulasan"),

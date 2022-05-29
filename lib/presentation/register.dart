@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Register extends StatefulWidget {
@@ -12,6 +14,9 @@ class _RegisterState extends State<Register> {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+  var db = FirebaseFirestore.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -46,6 +51,7 @@ class _RegisterState extends State<Register> {
                   controller: emailController,
                   keyboardType: TextInputType.emailAddress,
                   decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.email),
                     border: OutlineInputBorder(),
                     labelText: 'Email',
                   ),
@@ -54,9 +60,10 @@ class _RegisterState extends State<Register> {
               Container(
                 padding: const EdgeInsets.all(10),
                 child: TextField(
-                  controller: emailController,
+                  controller: nameController,
                   keyboardType: TextInputType.text,
                   decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.person),
                     border: OutlineInputBorder(),
                     labelText: 'Nama Lengkap',
                   ),
@@ -64,10 +71,11 @@ class _RegisterState extends State<Register> {
               ),
               Container(
                 padding: const EdgeInsets.all(10),
-                child: TextField(
-                  controller: emailController,
+                child: TextFormField(
+                  controller: phoneController,
                   keyboardType: TextInputType.phone,
                   decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.phone),
                     border: OutlineInputBorder(),
                     labelText: 'Nomor telepon',
                   ),
@@ -75,11 +83,12 @@ class _RegisterState extends State<Register> {
               ),
               Container(
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                child: TextField(
+                child: TextFormField(
                   obscureText: true,
                   controller: passwordController,
                   keyboardType: TextInputType.text,
                   decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.password_sharp),
                     border: OutlineInputBorder(),
                     labelText: 'Password',
                   ),
@@ -90,10 +99,9 @@ class _RegisterState extends State<Register> {
                 height: 50,
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
-                  child: const Text('Login'),
+                  child: const Text('Daftar'),
                   onPressed: () {
-                    print(emailController.text);
-                    print(passwordController.text);
+                    _registerWithEmail();
                   },
                 ),
               ),
@@ -101,7 +109,7 @@ class _RegisterState extends State<Register> {
                 children: <Widget>[
                   const Text('Sudah punya akun?'),
                   TextButton(
-                    child: const Text('Login'),
+                    child: const Text('Masuk'),
                     onPressed: () {
                       Navigator.of(context).pop();
                     },
@@ -114,5 +122,28 @@ class _RegisterState extends State<Register> {
         ),
       ),
     );
+  }
+
+  _registerWithEmail() async {
+    // UserCredential userCredential =
+    //     await firebaseAuth.createUserWithEmailAndPassword(
+    //         email: emailController.text, password: passwordController.text);
+
+    final userId = db.collection("users").doc();
+
+    // Create a new user with a first and last name
+    final data = <String, dynamic>{
+      'userId': userId.id,
+      "fullName": nameController.text,
+      "phoneNumber": phoneController.text,
+      "email": emailController.text,
+      "password": passwordController.text
+    };
+
+    userId.set(data);
+
+// Add a new document with a generated ID
+    // db.collection("users").add(user).then((DocumentReference doc) =>
+    //     print('DocumentSnapshot added with ID: ${doc.id}'));
   }
 }

@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:midodaren_wo_mobile/models/user.dart';
 import 'package:midodaren_wo_mobile/presentation/dashboard.dart';
 import 'package:midodaren_wo_mobile/presentation/register.dart';
 import 'package:midodaren_wo_mobile/resources/color_manager.dart';
+import 'package:midodaren_wo_mobile/services/auth_service.dart';
+import 'package:midodaren_wo_mobile/shared_methods.dart';
 
 class Login extends StatefulWidget {
   Login({Key? key}) : super(key: key);
@@ -14,6 +17,9 @@ class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  final Auth _auth = Auth();
+  final SharedMethods _sharedMethods = SharedMethods();
+
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
@@ -23,7 +29,7 @@ class _LoginState extends State<Login> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(20),
-          child: Column(
+          child: ListView(
             children: <Widget>[
               SizedBox(height: _height * 0.1),
               Center(
@@ -37,25 +43,31 @@ class _LoginState extends State<Login> {
                   alignment: Alignment.center,
                   padding: const EdgeInsets.all(10),
                   child: const Text(
-                    'Sign in',
+                    'Masuk',
                     style: TextStyle(fontSize: 20),
                   )),
               Container(
                 padding: const EdgeInsets.all(10),
-                child: TextField(
+                child: TextFormField(
                   controller: emailController,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Email',
-                  ),
+                  decoration: InputDecoration(
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: ColorManager.primary),
+                      ),
+                      prefixIcon: const Icon(Icons.email),
+                      prefixIconColor: ColorManager.primary,
+                      border: const OutlineInputBorder(),
+                      labelText: 'Email',
+                      hintText: 'Masukan email'),
                 ),
               ),
               Container(
-                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                padding: const EdgeInsets.all(10),
                 child: TextField(
                   obscureText: true,
                   controller: passwordController,
                   decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.password),
                     border: OutlineInputBorder(),
                     labelText: 'Password',
                   ),
@@ -72,15 +84,24 @@ class _LoginState extends State<Login> {
                     onPrimary: Colors.white, // foreground
                   ),
                   child: const Text('Login'),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (ctx) => Dashboard(
-                          menuScreenContext: context,
+                  onPressed: () async {
+                    AppUser user = await _auth.loginWithEmail(
+                        emailController.text, passwordController.text);
+
+                    if (user != null) {
+                      _sharedMethods.saveUserLoginsDetails(user);
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (ctx) => Dashboard(
+                            menuScreenContext: context,
+                          ),
                         ),
-                      ),
-                    );
+                      );
+                    } else {
+                      print("kosong");
+                    }
                   },
                 ),
               ),

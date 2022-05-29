@@ -24,6 +24,7 @@ class Transaction extends StatelessWidget {
         backgroundColor: ColorManager.primary,
         title: const Text("Pesanan"),
         centerTitle: true,
+        elevation: 1,
       ),
       body: ListView(
         padding: const EdgeInsets.all(10),
