@@ -46,6 +46,7 @@ class _LoginState extends State<Login> {
                     'Masuk',
                     style: TextStyle(fontSize: 20),
                   )),
+              const SizedBox(height: 20),
               Container(
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
@@ -105,6 +106,7 @@ class _LoginState extends State<Login> {
                   },
                 ),
               ),
+              const SizedBox(height: 50),
               Row(
                 children: <Widget>[
                   const Text('Belum punya akun?'),
@@ -124,29 +126,29 @@ class _LoginState extends State<Login> {
                 ],
                 mainAxisAlignment: MainAxisAlignment.center,
               ),
-              Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.only(right: 20.0),
-                      child: const Divider(
-                        color: Colors.black,
-                        height: 36,
-                      ),
-                    ),
-                  ),
-                  const Text("atau"),
-                  Expanded(
-                    child: Container(
-                      margin: const EdgeInsets.only(left: 20.0),
-                      child: const Divider(
-                        color: Colors.black,
-                        height: 36,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              // Row(
+              //   children: <Widget>[
+              //     Expanded(
+              //       child: Container(
+              //         margin: const EdgeInsets.only(right: 20.0),
+              //         child: const Divider(
+              //           color: Colors.black,
+              //           height: 36,
+              //         ),
+              //       ),
+              //     ),
+              //     const Text("atau"),
+              //     Expanded(
+              //       child: Container(
+              //         margin: const EdgeInsets.only(left: 20.0),
+              //         child: const Divider(
+              //           color: Colors.black,
+              //           height: 36,
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ],
           ),
         ),
