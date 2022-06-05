@@ -20,6 +20,8 @@ class _LoginState extends State<Login> {
   final Auth _auth = Auth();
   final SharedMethods _sharedMethods = SharedMethods();
 
+  bool isLoading = false;
+
   @override
   Widget build(BuildContext context) {
     double _height = MediaQuery.of(context).size.height;
@@ -84,13 +86,25 @@ class _LoginState extends State<Login> {
                     primary: ColorManager.primary, // background
                     onPrimary: Colors.white, // foreground
                   ),
-                  child: const Text('Login'),
+                  child: isLoading
+                      ? CircularProgressIndicator(
+                          color: ColorManager.white,
+                        )
+                      : const Text('Login'),
                   onPressed: () async {
+                    setState(() {
+                      isLoading = true;
+                    });
+
                     AppUser user = await _auth.loginWithEmail(
                         emailController.text, passwordController.text);
 
                     if (user != null) {
                       _sharedMethods.saveUserLoginsDetails(user);
+
+                      setState(() {
+                        isLoading = false;
+                      });
 
                       Navigator.push(
                         context,
@@ -102,7 +116,12 @@ class _LoginState extends State<Login> {
                         ),
                       );
                     } else {
-                      print("kosong");
+                      setState(() {
+                        isLoading = false;
+                      });
+                      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                          content:
+                              Text("Pengguna tidak ditemukan. Coba lagi.")));
                     }
                   },
                 ),

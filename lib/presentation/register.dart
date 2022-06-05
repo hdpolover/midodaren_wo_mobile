@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
+import '../resources/color_manager.dart';
+
 class Register extends StatefulWidget {
   Register({Key? key}) : super(key: key);
 
@@ -112,6 +114,10 @@ class _RegisterState extends State<Register> {
                 height: 50,
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: ColorManager.primary, // background
+                    onPrimary: Colors.white, // foreground
+                  ),
                   child: const Text('Daftar'),
                   onPressed: () {
                     _registerWithEmail();
@@ -138,9 +144,8 @@ class _RegisterState extends State<Register> {
   }
 
   _registerWithEmail() async {
-    // UserCredential userCredential =
-    //     await firebaseAuth.createUserWithEmailAndPassword(
-    //         email: emailController.text, password: passwordController.text);
+    await firebaseAuth.createUserWithEmailAndPassword(
+        email: emailController.text, password: passwordController.text);
 
     final userId = db.collection("users").doc();
 
@@ -157,8 +162,9 @@ class _RegisterState extends State<Register> {
 
     userId.set(data);
 
-// Add a new document with a generated ID
-    // db.collection("users").add(user).then((DocumentReference doc) =>
-    //     print('DocumentSnapshot added with ID: ${doc.id}'));
+    Navigator.of(context).pop();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Berhasil mendaftar. Silakan login.")));
   }
 }

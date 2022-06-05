@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:midodaren_wo_mobile/models/user.dart';
 import 'package:midodaren_wo_mobile/presentation/edit_profile.dart';
+import 'package:midodaren_wo_mobile/presentation/login.dart';
 import 'package:midodaren_wo_mobile/resources/color_manager.dart';
 import 'package:midodaren_wo_mobile/shared_methods.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -135,13 +136,12 @@ class _ProfileState extends State<Profile> {
           ),
           ListTile(
             onTap: () {
-// Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => PersonalInformationWidget(
-              //         widget.currentCustomer),
-              //   ),
-              // );
+              pushNewScreen(
+                context,
+                screen: Login(),
+                withNavBar: false, // OPTIONAL VALUE. True by default.
+                pageTransitionAnimation: PageTransitionAnimation.fade,
+              );
             },
             leading: const Icon(Icons.logout),
             title: const Text("Keluar"),

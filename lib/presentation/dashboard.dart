@@ -46,15 +46,6 @@ class _DashboardState extends State<Dashboard> {
               });
             },
           ),
-          Search(
-            menuScreenContext: widget.menuScreenContext,
-            hideStatus: _hideNavBar,
-            onScreenHideButtonPressed: () {
-              setState(() {
-                _hideNavBar = !_hideNavBar;
-              });
-            },
-          ),
           Transaction(
             menuScreenContext: widget.menuScreenContext,
             hideStatus: _hideNavBar,
@@ -173,12 +164,6 @@ class _DashboardState extends State<Dashboard> {
           PersistentBottomNavBarItem(
             icon: const Icon(Icons.home),
             title: "Beranda",
-            activeColorPrimary: Colors.white,
-            inactiveColorPrimary: Colors.white54,
-          ),
-          PersistentBottomNavBarItem(
-            icon: const Icon(Icons.search),
-            title: ("Cari"),
             activeColorPrimary: Colors.white,
             inactiveColorPrimary: Colors.white54,
           ),
