@@ -11,7 +11,7 @@ class SharedMethods {
     prefs.setString("fullName", user.fullName!);
     prefs.setString("password", user.password!);
     prefs.setString("phoneNumber", user.phoneNumber!);
-    prefs.setString("photo", user.photo!);
+    prefs.setString("photo", user.address!);
   }
 
   Future<AppUser> getUserDetails() async {
@@ -24,7 +24,7 @@ class SharedMethods {
       email: prefs.getString("email"),
       password: prefs.getString("password"),
       fullName: prefs.getString("fullName"),
-      photo: prefs.getString("photo"),
+      address: prefs.getString("photo"),
       phoneNumber: prefs.getString("phoneNumber"),
     );
 

@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:midodaren_wo_mobile/models/user.dart';
 import 'package:midodaren_wo_mobile/presentation/service_page.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class ServiceWidget extends StatelessWidget {
+  AppUser user;
+
   String? image;
   String? name;
 
-  ServiceWidget({required this.image, required this.name, Key? key})
+  ServiceWidget(
+      {required this.user, required this.image, required this.name, Key? key})
       : super(key: key);
 
   @override
@@ -16,6 +20,7 @@ class ServiceWidget extends StatelessWidget {
         pushNewScreen(
           context,
           screen: ServicePage(
+            role: user.role!,
             name: name,
           ),
           withNavBar: false, // OPTIONAL VALUE. True by default.

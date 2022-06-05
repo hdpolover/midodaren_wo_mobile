@@ -97,6 +97,7 @@ class _LoginState extends State<Login> {
                         MaterialPageRoute(
                           builder: (ctx) => Dashboard(
                             menuScreenContext: context,
+                            currentUser: user,
                           ),
                         ),
                       );

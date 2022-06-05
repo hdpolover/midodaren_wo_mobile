@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:midodaren_wo_mobile/models/user.dart';
+import 'package:midodaren_wo_mobile/presentation/admin_home.dart';
 import 'package:midodaren_wo_mobile/presentation/home.dart';
 import 'package:midodaren_wo_mobile/presentation/profile.dart';
 import 'package:midodaren_wo_mobile/presentation/search.dart';
 import 'package:midodaren_wo_mobile/presentation/transaction.dart';
-import 'package:midodaren_wo_mobile/presentation/widgets/screen.dart';
 import 'package:midodaren_wo_mobile/resources/color_manager.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class Dashboard extends StatefulWidget {
   final BuildContext menuScreenContext;
-  const Dashboard({Key? key, required this.menuScreenContext})
+  AppUser currentUser;
+
+  Dashboard(
+      {Key? key, required this.menuScreenContext, required this.currentUser})
       : super(key: key);
 
   @override
@@ -28,93 +32,228 @@ class _DashboardState extends State<Dashboard> {
   }
 
   List<Widget> _buildScreens() {
-    return [
-      Home(
-        menuScreenContext: widget.menuScreenContext,
-        hideStatus: _hideNavBar,
-        onScreenHideButtonPressed: () {
-          setState(() {
-            _hideNavBar = !_hideNavBar;
-          });
-        },
-      ),
-      Search(
-        menuScreenContext: widget.menuScreenContext,
-        hideStatus: _hideNavBar,
-        onScreenHideButtonPressed: () {
-          setState(() {
-            _hideNavBar = !_hideNavBar;
-          });
-        },
-      ),
-      Transaction(
-        menuScreenContext: widget.menuScreenContext,
-        hideStatus: _hideNavBar,
-        onScreenHideButtonPressed: () {
-          setState(() {
-            _hideNavBar = !_hideNavBar;
-          });
-        },
-      ),
-      Profile(
-        menuScreenContext: widget.menuScreenContext,
-        hideStatus: _hideNavBar,
-        onScreenHideButtonPressed: () {
-          setState(() {
-            _hideNavBar = !_hideNavBar;
-          });
-        },
-      ),
-    ];
+    List<Widget> screens = [];
+    switch (widget.currentUser.role) {
+      case "admin":
+        screens = [
+          AdminHome(
+            menuScreenContext: widget.menuScreenContext,
+            user: widget.currentUser,
+            hideStatus: _hideNavBar,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
+          Search(
+            menuScreenContext: widget.menuScreenContext,
+            hideStatus: _hideNavBar,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
+          Transaction(
+            menuScreenContext: widget.menuScreenContext,
+            hideStatus: _hideNavBar,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
+          Profile(
+            menuScreenContext: widget.menuScreenContext,
+            hideStatus: _hideNavBar,
+            currentUser: widget.currentUser,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
+        ];
+        break;
+      case "user":
+        screens = [
+          Home(
+            menuScreenContext: widget.menuScreenContext,
+            user: widget.currentUser,
+            hideStatus: _hideNavBar,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
+          Search(
+            menuScreenContext: widget.menuScreenContext,
+            hideStatus: _hideNavBar,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
+          Transaction(
+            menuScreenContext: widget.menuScreenContext,
+            hideStatus: _hideNavBar,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
+          Profile(
+            menuScreenContext: widget.menuScreenContext,
+            hideStatus: _hideNavBar,
+            currentUser: widget.currentUser,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
+        ];
+        break;
+      default:
+        screens = [
+          Home(
+            menuScreenContext: widget.menuScreenContext,
+            user: widget.currentUser,
+            hideStatus: _hideNavBar,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
+          Search(
+            menuScreenContext: widget.menuScreenContext,
+            hideStatus: _hideNavBar,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
+          Transaction(
+            menuScreenContext: widget.menuScreenContext,
+            hideStatus: _hideNavBar,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
+          Profile(
+            menuScreenContext: widget.menuScreenContext,
+            hideStatus: _hideNavBar,
+            currentUser: widget.currentUser,
+            onScreenHideButtonPressed: () {
+              setState(() {
+                _hideNavBar = !_hideNavBar;
+              });
+            },
+          ),
+        ];
+        break;
+    }
+
+    return screens;
   }
 
   List<PersistentBottomNavBarItem> _navBarsItems() {
-    return [
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.home),
-        title: "Beranda",
-        activeColorPrimary: Colors.white,
-        inactiveColorPrimary: Colors.white54,
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.search),
-        title: ("Cari"),
-        activeColorPrimary: Colors.white,
-        inactiveColorPrimary: Colors.white54,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: '/',
-          routes: {
-            '/first': (context) => MainScreen2(),
-            '/second': (context) => MainScreen3(),
-          },
-        ),
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.list_alt),
-        title: ("Pesanan"),
-        activeColorPrimary: Colors.white,
-        inactiveColorPrimary: Colors.white54,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: '/',
-          routes: {
-            '/first': (context) => MainScreen2(),
-            '/second': (context) => MainScreen3(),
-          },
-        ),
-      ),
-      PersistentBottomNavBarItem(
-        icon: const Icon(Icons.person),
-        title: ("Profil"),
-        activeColorPrimary: Colors.white,
-        inactiveColorPrimary: Colors.white54,
-        routeAndNavigatorSettings: RouteAndNavigatorSettings(
-          initialRoute: '/',
-          routes: {
-            '/profile': (context) => MainScreen2(),
-          },
-        ),
-      ),
-    ];
+    List<PersistentBottomNavBarItem> navBars = [];
+    switch (widget.currentUser.role) {
+      case "admin":
+        navBars = [
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.home),
+            title: "Beranda",
+            activeColorPrimary: Colors.white,
+            inactiveColorPrimary: Colors.white54,
+          ),
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.search),
+            title: ("Cari"),
+            activeColorPrimary: Colors.white,
+            inactiveColorPrimary: Colors.white54,
+          ),
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.list_alt),
+            title: ("Pesanan"),
+            activeColorPrimary: Colors.white,
+            inactiveColorPrimary: Colors.white54,
+          ),
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.person),
+            title: ("Profil"),
+            activeColorPrimary: Colors.white,
+            inactiveColorPrimary: Colors.white54,
+          ),
+        ];
+        break;
+      case "user":
+        navBars = [
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.home),
+            title: "Beranda",
+            activeColorPrimary: Colors.white,
+            inactiveColorPrimary: Colors.white54,
+          ),
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.search),
+            title: ("Cari"),
+            activeColorPrimary: Colors.white,
+            inactiveColorPrimary: Colors.white54,
+          ),
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.list_alt),
+            title: ("Pesanan"),
+            activeColorPrimary: Colors.white,
+            inactiveColorPrimary: Colors.white54,
+          ),
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.person),
+            title: ("Profil"),
+            activeColorPrimary: Colors.white,
+            inactiveColorPrimary: Colors.white54,
+          ),
+        ];
+        break;
+      default:
+        navBars = [
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.home),
+            title: "Beranda",
+            activeColorPrimary: Colors.white,
+            inactiveColorPrimary: Colors.white54,
+          ),
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.search),
+            title: ("Cari"),
+            activeColorPrimary: Colors.white,
+            inactiveColorPrimary: Colors.white54,
+          ),
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.list_alt),
+            title: ("Pesanan"),
+            activeColorPrimary: Colors.white,
+            inactiveColorPrimary: Colors.white54,
+          ),
+          PersistentBottomNavBarItem(
+            icon: const Icon(Icons.person),
+            title: ("Profil"),
+            activeColorPrimary: Colors.white,
+            inactiveColorPrimary: Colors.white54,
+          ),
+        ];
+        break;
+    }
+    return navBars;
   }
 
   @override

@@ -14,6 +14,7 @@ class _RegisterState extends State<Register> {
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  TextEditingController addressController = TextEditingController();
 
   FirebaseAuth firebaseAuth = FirebaseAuth.instance;
   var db = FirebaseFirestore.instance;
@@ -82,6 +83,18 @@ class _RegisterState extends State<Register> {
                 ),
               ),
               Container(
+                padding: const EdgeInsets.all(10),
+                child: TextFormField(
+                  controller: addressController,
+                  keyboardType: TextInputType.phone,
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Icons.phone),
+                    border: OutlineInputBorder(),
+                    labelText: 'Alamat',
+                  ),
+                ),
+              ),
+              Container(
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextFormField(
                   obscureText: true,
@@ -137,7 +150,9 @@ class _RegisterState extends State<Register> {
       "fullName": nameController.text,
       "phoneNumber": phoneController.text,
       "email": emailController.text,
-      "password": passwordController.text
+      "password": passwordController.text,
+      "address": addressController.text,
+      "role": "user"
     };
 
     userId.set(data);

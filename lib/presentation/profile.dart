@@ -9,13 +9,15 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class Profile extends StatefulWidget {
   final BuildContext menuScreenContext;
+  AppUser? currentUser;
   final Function onScreenHideButtonPressed;
   final bool hideStatus;
 
-  const Profile(
+  Profile(
       {Key? key,
       required this.menuScreenContext,
       required this.onScreenHideButtonPressed,
+      required this.currentUser,
       this.hideStatus = false})
       : super(key: key);
 
@@ -24,20 +26,6 @@ class Profile extends StatefulWidget {
 }
 
 class _ProfileState extends State<Profile> {
-  AppUser? currentUser;
-  final SharedMethods _sharedMethods = SharedMethods();
-
-  @override
-  void initState() {
-    super.initState();
-
-    getUser();
-  }
-
-  void getUser() async {
-    currentUser = await _sharedMethods.getUserDetails();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,7 +54,7 @@ class _ProfileState extends State<Profile> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          currentUser?.fullName ?? "Nama Lengkap",
+                          widget.currentUser?.fullName ?? "Nama Lengkap",
                           overflow: TextOverflow.ellipsis,
                           style:
                               Theme.of(context).textTheme.headline6?.copyWith(
@@ -77,7 +65,7 @@ class _ProfileState extends State<Profile> {
                           height: 5,
                         ),
                         Text(
-                          currentUser?.email ?? "Email",
+                          widget.currentUser?.email ?? "Email",
                           overflow: TextOverflow.ellipsis,
                           style:
                               Theme.of(context).textTheme.headline6?.copyWith(

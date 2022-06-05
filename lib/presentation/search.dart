@@ -1,7 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:midodaren_wo_mobile/presentation/widgets/package_widget.dart';
 import 'package:midodaren_wo_mobile/resources/color_manager.dart';
 
-class Search extends StatelessWidget {
+import '../models/package.dart';
+
+class Search extends StatefulWidget {
   final BuildContext menuScreenContext;
   final Function onScreenHideButtonPressed;
   final bool hideStatus;
@@ -11,6 +15,14 @@ class Search extends StatelessWidget {
       required this.onScreenHideButtonPressed,
       this.hideStatus = false})
       : super(key: key);
+
+  @override
+  State<Search> createState() => _SearchState();
+}
+
+class _SearchState extends State<Search> {
+  final Stream<QuerySnapshot>? _packageStream =
+      FirebaseFirestore.instance.collection('packages').snapshots();
 
   @override
   Widget build(BuildContext context) {
@@ -55,16 +67,59 @@ class Search extends StatelessWidget {
           ),
         ),
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(10),
-        children: [
-          _buildCard(context),
-          _buildCard(context),
-          _buildCard(context),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 0.1,
-          ),
-        ],
+      body: StreamBuilder<QuerySnapshot>(
+        stream: _packageStream,
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const Center(
+              child: Text('Terjadi kesalahan.'),
+            );
+          }
+
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CircularProgressIndicator(
+                    color: ColorManager.primary,
+                  ),
+                  const SizedBox(height: 20),
+                  const Text("Loading"),
+                ],
+              ),
+            );
+          }
+
+          if (snapshot.data!.docs.isNotEmpty) {
+            return ListView(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+              children: snapshot.data!.docs
+                  .map((DocumentSnapshot document) {
+                    Package package = Package.fromFirestore(
+                        document as DocumentSnapshot<Map<String, dynamic>>);
+
+                    return PackageWidget(package: package);
+                  })
+                  .toList()
+                  .cast(),
+            );
+          } else {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.error,
+                    color: Colors.red,
+                  ),
+                  const SizedBox(height: 20),
+                  const Text("Tidak ada layanan ditemukan."),
+                ],
+              ),
+            );
+          }
+        },
       ),
     );
   }

@@ -6,7 +6,8 @@ class AppUser {
   final String? email;
   final String? password;
   final String? phoneNumber;
-  final String? photo;
+  final String? address;
+  final String? role;
 
   AppUser({
     this.userId,
@@ -14,7 +15,8 @@ class AppUser {
     this.email,
     this.password,
     this.phoneNumber,
-    this.photo,
+    this.address,
+    this.role,
   });
 
   factory AppUser.fromFirestore(
@@ -28,7 +30,8 @@ class AppUser {
       email: data?['email'],
       password: data?['password'],
       phoneNumber: data?['phoneNumber'],
-      photo: data?['photo'],
+      address: data?['address'],
+      role: data?['role'],
     );
   }
 
@@ -39,7 +42,8 @@ class AppUser {
       if (email != null) "email": email,
       if (password != null) "password": password,
       if (phoneNumber != null) "phoneNumber": phoneNumber,
-      if (photo != null) "photo": photo,
+      if (address != null) "address": address,
+      if (role != null) "role": role,
     };
   }
 }
