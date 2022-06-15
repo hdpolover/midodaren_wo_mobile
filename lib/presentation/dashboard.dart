@@ -4,7 +4,7 @@ import 'package:midodaren_wo_mobile/presentation/admin_home.dart';
 import 'package:midodaren_wo_mobile/presentation/home.dart';
 import 'package:midodaren_wo_mobile/presentation/profile.dart';
 import 'package:midodaren_wo_mobile/presentation/search.dart';
-import 'package:midodaren_wo_mobile/presentation/transaction.dart';
+import 'package:midodaren_wo_mobile/presentation/orders.dart';
 import 'package:midodaren_wo_mobile/resources/color_manager.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
@@ -46,7 +46,7 @@ class _DashboardState extends State<Dashboard> {
               });
             },
           ),
-          Transaction(
+          Orders(
             menuScreenContext: widget.menuScreenContext,
             hideStatus: _hideNavBar,
             onScreenHideButtonPressed: () {
@@ -88,7 +88,7 @@ class _DashboardState extends State<Dashboard> {
               });
             },
           ),
-          Transaction(
+          Orders(
             menuScreenContext: widget.menuScreenContext,
             hideStatus: _hideNavBar,
             onScreenHideButtonPressed: () {
@@ -130,7 +130,7 @@ class _DashboardState extends State<Dashboard> {
               });
             },
           ),
-          Transaction(
+          Orders(
             menuScreenContext: widget.menuScreenContext,
             hideStatus: _hideNavBar,
             onScreenHideButtonPressed: () {

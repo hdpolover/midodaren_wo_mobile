@@ -93,7 +93,7 @@ class _SearchState extends State<Search> {
 
           if (snapshot.data!.docs.isNotEmpty) {
             return ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+              padding: const EdgeInsets.fromLTRB(5, 20, 5, 70),
               children: snapshot.data!.docs
                   .map((DocumentSnapshot document) {
                     Package package = Package.fromFirestore(

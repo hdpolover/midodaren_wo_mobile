@@ -118,7 +118,9 @@ class _AddServiceState extends State<AddService> {
               const SizedBox(height: 10),
               TextField(
                 controller: descController,
-                keyboardType: TextInputType.text,
+                minLines: 5,
+                maxLines: null,
+                keyboardType: TextInputType.multiline,
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Masukan deskripsi paket',

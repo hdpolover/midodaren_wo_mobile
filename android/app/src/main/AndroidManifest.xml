@@ -2,6 +2,26 @@
     package="com.example.midodaren_wo_mobile">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"/>
+
+    <queries>
+        <!-- If your app checks for SMS support -->
+        <intent>
+          <action android:name="android.intent.action.VIEW" />
+          <data android:scheme="sms" />
+        </intent>
+        <!-- If your app checks for call support -->
+        <intent>
+          <action android:name="android.intent.action.VIEW" />
+          <data android:scheme="tel" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+      </queries>
+
    <application
         android:label="Midodaren WO"
         android:name="${applicationName}"
@@ -33,5 +53,7 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+            
     </application>
 </manifest>

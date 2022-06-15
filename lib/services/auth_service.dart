@@ -83,6 +83,7 @@ class Auth {
         .where("password", isEqualTo: password);
 
     final docSnap = await query.get();
+
     final user = docSnap.docs.first;
 
     return user.data();

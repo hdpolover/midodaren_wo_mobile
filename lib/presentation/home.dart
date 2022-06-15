@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:midodaren_wo_mobile/models/user.dart';
 import 'package:midodaren_wo_mobile/presentation/widgets/service_widget.dart';
+import 'package:midodaren_wo_mobile/presentation/widgets/shared_methods.dart';
 import 'package:midodaren_wo_mobile/resources/color_manager.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
@@ -132,10 +133,48 @@ class _HomeState extends State<Home> {
                                     image: "assets/couple.png",
                                     name: "Paket Wedding",
                                   ),
-                                  ServiceWidget(
-                                    user: widget.user,
-                                    image: "assets/consultant-services.png",
-                                    name: "Konsultasi",
+                                  InkWell(
+                                    onTap: () {
+                                      CommonSharedMethods.launchWhatsapp(
+                                          "6283848889803",
+                                          "Halo, kak Admin. Saya mau tanya tentang paket layanan.");
+                                    },
+                                    child: Card(
+                                      child: SizedBox(
+                                        height:
+                                            MediaQuery.of(context).size.height *
+                                                0.2,
+                                        width:
+                                            MediaQuery.of(context).size.width *
+                                                0.25,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          children: [
+                                            const SizedBox(height: 20),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(10.0),
+                                              child: Image(
+                                                width: 70,
+                                                height: 70,
+                                                image: AssetImage(
+                                                    "assets/consultant-services.png"),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.fromLTRB(
+                                                      10, 5, 10, 0),
+                                              child: Text(
+                                                "Konsultasi",
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ],
                               )
