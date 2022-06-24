@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:midodaren_wo_mobile/models/user.dart';
 import 'package:midodaren_wo_mobile/presentation/edit_profile.dart';
 import 'package:midodaren_wo_mobile/presentation/login.dart';
+import 'package:midodaren_wo_mobile/presentation/ulasan.dart';
 import 'package:midodaren_wo_mobile/resources/color_manager.dart';
 import 'package:midodaren_wo_mobile/shared_methods.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -86,18 +87,22 @@ class _ProfileState extends State<Profile> {
       body: Column(
         children: [
           const SizedBox(height: 10),
-          ListTile(
-            onTap: () {
-              pushNewScreen(
-                context,
-                screen: EditProfile(),
-                withNavBar: false, // OPTIONAL VALUE. True by default.
-                pageTransitionAnimation: PageTransitionAnimation.fade,
-              );
-            },
-            leading: const Icon(Icons.edit),
-            title: const Text("Edit Profil"),
-          ),
+          widget.currentUser!.role == "admin"
+              ? const SizedBox()
+              : ListTile(
+                  onTap: () {
+                    pushNewScreen(
+                      context,
+                      screen: EditProfile(
+                        user: widget.currentUser!,
+                      ),
+                      withNavBar: false, // OPTIONAL VALUE. True by default.
+                      pageTransitionAnimation: PageTransitionAnimation.fade,
+                    );
+                  },
+                  leading: const Icon(Icons.edit),
+                  title: const Text("Edit Profil"),
+                ),
           const Divider(
             thickness: 1,
             color: Colors.grey,
@@ -107,7 +112,7 @@ class _ProfileState extends State<Profile> {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EditProfile(),
+                    builder: (context) => Ulasan(),
                   ));
             },
             leading: const Icon(Icons.rate_review),
@@ -117,23 +122,27 @@ class _ProfileState extends State<Profile> {
             thickness: 1,
             color: Colors.grey,
           ),
-          ListTile(
-            onTap: () {
+          widget.currentUser!.role == "admin"
+              ? const SizedBox()
+              : ListTile(
+                  onTap: () {
 // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => PersonalInformationWidget(
-              //         widget.currentCustomer),
-              //   ),
-              // );
-            },
-            leading: const Icon(Icons.help_center),
-            title: const Text("Pusat Bantuan"),
-          ),
-          const Divider(
-            thickness: 1,
-            color: Colors.grey,
-          ),
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) => PersonalInformationWidget(
+                    //         widget.currentCustomer),
+                    //   ),
+                    // );
+                  },
+                  leading: const Icon(Icons.help_center),
+                  title: const Text("Pusat Bantuan"),
+                ),
+          widget.currentUser!.role == "admin"
+              ? const SizedBox()
+              : const Divider(
+                  thickness: 1,
+                  color: Colors.grey,
+                ),
           ListTile(
             onTap: () {
               pushNewScreen(

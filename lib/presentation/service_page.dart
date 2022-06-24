@@ -70,7 +70,7 @@ class _ServicePageState extends State<ServicePage> {
                     Package package = Package.fromFirestore(
                         document as DocumentSnapshot<Map<String, dynamic>>);
 
-                    return PackageWidget(package: package);
+                    return PackageWidget(role: widget.role, package: package);
                   })
                   .toList()
                   .cast(),

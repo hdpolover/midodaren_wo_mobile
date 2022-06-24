@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:midodaren_wo_mobile/models/package_order.dart';
+import 'package:midodaren_wo_mobile/presentation/add_ulasan.dart';
 import 'package:midodaren_wo_mobile/presentation/order_details.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
+import '../../resources/color_manager.dart';
+
 class OrderWidget extends StatelessWidget {
   PackageOrder order;
-  OrderWidget({required this.order, Key? key}) : super(key: key);
+  String role;
+  String userId;
+  OrderWidget(
+      {required this.userId, required this.role, required this.order, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +21,8 @@ class OrderWidget extends StatelessWidget {
         pushNewScreen(
           context,
           screen: OrderDetails(
-            package: order,
+            role: role,
+            order: order,
           ),
           withNavBar: false,
           pageTransitionAnimation: PageTransitionAnimation.fade,
@@ -32,6 +40,11 @@ class OrderWidget extends StatelessWidget {
                 alignment: Alignment.centerRight,
                 child: Chip(
                   label: Text(order.status!),
+                  backgroundColor: order.status == "terkonfirmasi"
+                      ? Colors.green
+                      : order.status == "selesai"
+                          ? Colors.grey
+                          : Colors.yellow,
                 ),
               ),
               const SizedBox(height: 10),
@@ -66,6 +79,35 @@ class OrderWidget extends StatelessWidget {
                   Text(order.address!),
                 ],
               ),
+              const SizedBox(height: 10),
+              role == "user"
+                  ? order.status == "selesai"
+                      ? SizedBox(
+                          height: 50,
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              primary: ColorManager.primary, // background
+                              onPrimary: Colors.white, // foreground
+                            ),
+                            child: const Text('Beri ulasan'),
+                            onPressed: () {
+                              // _updatePackage();
+                              pushNewScreen(
+                                context,
+                                screen: AddUlasan(
+                                  userId: userId,
+                                  packageId: order.packageId!,
+                                ),
+                                withNavBar: false,
+                                pageTransitionAnimation:
+                                    PageTransitionAnimation.fade,
+                              );
+                            },
+                          ),
+                        )
+                      : Container()
+                  : Container(),
             ],
           ),
         ),

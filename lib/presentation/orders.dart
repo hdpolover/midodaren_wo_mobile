@@ -6,6 +6,7 @@ import 'package:getwidget/components/card/gf_card.dart';
 import 'package:getwidget/components/list_tile/gf_list_tile.dart';
 import 'package:getwidget/getwidget.dart';
 import 'package:midodaren_wo_mobile/models/package_order.dart';
+import 'package:midodaren_wo_mobile/models/user.dart';
 import 'package:midodaren_wo_mobile/presentation/widgets/order_widget.dart';
 import 'package:midodaren_wo_mobile/resources/color_manager.dart';
 
@@ -13,9 +14,11 @@ class Orders extends StatefulWidget {
   final BuildContext menuScreenContext;
   final Function onScreenHideButtonPressed;
   final bool hideStatus;
-  const Orders(
+  AppUser user;
+  Orders(
       {Key? key,
       required this.menuScreenContext,
+      required this.user,
       required this.onScreenHideButtonPressed,
       this.hideStatus = false})
       : super(key: key);
@@ -75,7 +78,9 @@ class _OrdersState extends State<Orders> {
                         document as DocumentSnapshot<Map<String, dynamic>>);
 
                     return OrderWidget(
+                      role: widget.user.role!,
                       order: order,
+                      userId: widget.user.userId!,
                     );
                   })
                   .toList()

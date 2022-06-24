@@ -18,6 +18,7 @@ class AddService extends StatefulWidget {
 class _AddServiceState extends State<AddService> {
   TextEditingController descController = TextEditingController();
   TextEditingController nameController = TextEditingController();
+  TextEditingController companyController = TextEditingController();
   TextEditingController priceController = TextEditingController();
 
   var db = FirebaseFirestore.instance;
@@ -98,7 +99,21 @@ class _AddServiceState extends State<AddService> {
           child: ListView(
             children: <Widget>[
               const Text(
-                "Nama",
+                "Nama Perusahaan",
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10),
+              TextField(
+                controller: companyController,
+                keyboardType: TextInputType.text,
+                decoration: const InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Masukan nama perusahaan',
+                ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                "Nama Paket",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
@@ -265,6 +280,7 @@ class _AddServiceState extends State<AddService> {
     if (nameController.text.isNotEmpty &&
         descController.text.isNotEmpty &&
         priceController.text.isNotEmpty &&
+        companyController.text.isNotEmpty &&
         (pickedFile1 != null || pickedFile2 != null || pickedFile3 != null)) {
       setState(() {
         isLoading = true;
@@ -287,6 +303,7 @@ class _AddServiceState extends State<AddService> {
           'id': package.id,
           "title": nameController.text,
           "desc": descController.text,
+          "company": companyController.text,
           "price": priceController.text,
           "serviceCategory": widget.category,
           "imageUrl1": url1,
@@ -300,6 +317,7 @@ class _AddServiceState extends State<AddService> {
           'id': package.id,
           "title": nameController.text,
           "desc": descController.text,
+          "company": companyController.text,
           "price": priceController.text,
           "serviceCategory": widget.category,
           "imageUrl1": url1,
@@ -314,6 +332,7 @@ class _AddServiceState extends State<AddService> {
           "title": nameController.text,
           "desc": descController.text,
           "price": priceController.text,
+          "company": companyController.text,
           "serviceCategory": widget.category,
           "imageUrl1": url1,
           "imageUrl2": url2,

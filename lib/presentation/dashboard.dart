@@ -36,7 +36,7 @@ class _DashboardState extends State<Dashboard> {
     switch (widget.currentUser.role) {
       case "admin":
         screens = [
-          AdminHome(
+          Home(
             menuScreenContext: widget.menuScreenContext,
             user: widget.currentUser,
             hideStatus: _hideNavBar,
@@ -49,6 +49,7 @@ class _DashboardState extends State<Dashboard> {
           Orders(
             menuScreenContext: widget.menuScreenContext,
             hideStatus: _hideNavBar,
+            user: widget.currentUser,
             onScreenHideButtonPressed: () {
               setState(() {
                 _hideNavBar = !_hideNavBar;
@@ -80,6 +81,7 @@ class _DashboardState extends State<Dashboard> {
             },
           ),
           Search(
+            user: widget.currentUser,
             menuScreenContext: widget.menuScreenContext,
             hideStatus: _hideNavBar,
             onScreenHideButtonPressed: () {
@@ -91,6 +93,7 @@ class _DashboardState extends State<Dashboard> {
           Orders(
             menuScreenContext: widget.menuScreenContext,
             hideStatus: _hideNavBar,
+            user: widget.currentUser,
             onScreenHideButtonPressed: () {
               setState(() {
                 _hideNavBar = !_hideNavBar;
@@ -122,6 +125,7 @@ class _DashboardState extends State<Dashboard> {
             },
           ),
           Search(
+            user: widget.currentUser,
             menuScreenContext: widget.menuScreenContext,
             hideStatus: _hideNavBar,
             onScreenHideButtonPressed: () {
@@ -133,6 +137,7 @@ class _DashboardState extends State<Dashboard> {
           Orders(
             menuScreenContext: widget.menuScreenContext,
             hideStatus: _hideNavBar,
+            user: widget.currentUser,
             onScreenHideButtonPressed: () {
               setState(() {
                 _hideNavBar = !_hideNavBar;

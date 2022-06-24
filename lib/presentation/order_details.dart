@@ -10,8 +10,10 @@ import '../models/package.dart';
 import '../resources/color_manager.dart';
 
 class OrderDetails extends StatefulWidget {
-  PackageOrder package;
-  OrderDetails({required this.package, Key? key}) : super(key: key);
+  PackageOrder order;
+  String role;
+  OrderDetails({required this.role, required this.order, Key? key})
+      : super(key: key);
 
   @override
   State<OrderDetails> createState() => _OrderDetailsState();
@@ -26,7 +28,7 @@ class _OrderDetailsState extends State<OrderDetails> {
     return FutureBuilder<DocumentSnapshot>(
         future: FirebaseFirestore.instance
             .collection("packages")
-            .doc(widget.package.packageId)
+            .doc(widget.order.packageId)
             .get(),
         builder:
             (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -120,49 +122,49 @@ class _OrderDetailsState extends State<OrderDetails> {
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              Chip(label: Text(widget.package.status!)),
+              Chip(label: Text(widget.order.status!)),
               const SizedBox(height: 20),
               const Text(
                 "Tanggal Pesan",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              Text(widget.package.orderDate!),
+              Text(widget.order.orderDate!),
               const SizedBox(height: 20),
               const Text(
                 "Tanggal Acara",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              Text(widget.package.date!),
+              Text(widget.order.date!),
               const SizedBox(height: 20),
               const Text(
                 "Nama Pemesan",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              Text(widget.package.fullName!),
+              Text(widget.order.fullName!),
               const SizedBox(height: 20),
               const Text(
                 "Nomor telepon (WhatsApp)",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              Text(widget.package.phoneNumber!),
+              Text(widget.order.phoneNumber!),
               const SizedBox(height: 20),
               const Text(
                 "Alamat",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              Text(widget.package.address!),
+              Text(widget.order.address!),
               const SizedBox(height: 20),
               const Text(
                 "Catatan",
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10),
-              Text(widget.package.note!),
+              Text(widget.order.note!),
               const SizedBox(height: 20),
               const Text(
                 "Bukti Pembayaran",
@@ -174,15 +176,54 @@ class _OrderDetailsState extends State<OrderDetails> {
                 width: double.infinity,
                 child: FancyShimmerImage(
                   boxFit: BoxFit.cover,
-                  imageUrl: widget.package.paymentProof!,
+                  imageUrl: widget.order.paymentProof!,
                   errorWidget: Image.network(
                       'https://i0.wp.com/www.dobitaobyte.com.br/wp-content/uploads/2016/02/no_image.png?ssl=1'),
                 ),
               ),
+              const SizedBox(height: 20),
+              widget.role == "admin"
+                  ? widget.order.status == "selesai"
+                      ? Container()
+                      : SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              if (widget.order.status ==
+                                  "menunggu konfirmasi") {
+                                updateStatus("terkonfirmasi");
+                              } else if (widget.order.status ==
+                                  "terkonfirmasi") {
+                                updateStatus("selesai");
+                              }
+
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text(
+                                          "Berhasil memperbarui status pesanan.")));
+
+                              Navigator.of(context).pop();
+                            },
+                            child: widget.order.status == "menunggu konfirmasi"
+                                ? const Text("Konfirmasi")
+                                : const Text("Selesaikan"),
+                          ),
+                        )
+                  : Container(),
             ],
           ),
         ),
       ),
     );
+  }
+
+  void updateStatus(String status) {
+    var collection = FirebaseFirestore.instance.collection('orders');
+    collection
+        .doc(widget.order.id)
+        .update({'status': status}) // <-- Updated data
+        .then((_) => print('Success'))
+        .catchError((error) => print('Failed: $error'));
   }
 }

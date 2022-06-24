@@ -8,7 +8,9 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class PackageWidget extends StatelessWidget {
   Package package;
-  PackageWidget({required this.package, Key? key}) : super(key: key);
+  String role;
+  PackageWidget({required this.role, required this.package, Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +19,7 @@ class PackageWidget extends StatelessWidget {
         pushNewScreen(
           context,
           screen: ServiceDetails(
+            role: role,
             package: package,
           ),
           withNavBar: false,
@@ -56,6 +59,13 @@ class PackageWidget extends StatelessWidget {
                   Text(
                     package.title!,
                     style: Theme.of(context).textTheme.headline6?.copyWith(
+                          color: Colors.black,
+                        ),
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    "Disediakan oleh ${package.company}",
+                    style: Theme.of(context).textTheme.bodyText2?.copyWith(
                           color: Colors.black,
                         ),
                   ),

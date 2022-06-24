@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:midodaren_wo_mobile/models/user.dart';
 import 'package:midodaren_wo_mobile/presentation/widgets/package_widget.dart';
 import 'package:midodaren_wo_mobile/resources/color_manager.dart';
 
@@ -9,8 +10,10 @@ class Search extends StatefulWidget {
   final BuildContext menuScreenContext;
   final Function onScreenHideButtonPressed;
   final bool hideStatus;
-  const Search(
+  AppUser user;
+  Search(
       {Key? key,
+      required this.user,
       required this.menuScreenContext,
       required this.onScreenHideButtonPressed,
       this.hideStatus = false})
@@ -99,7 +102,8 @@ class _SearchState extends State<Search> {
                     Package package = Package.fromFirestore(
                         document as DocumentSnapshot<Map<String, dynamic>>);
 
-                    return PackageWidget(package: package);
+                    return PackageWidget(
+                        role: widget.user.role!, package: package);
                   })
                   .toList()
                   .cast(),

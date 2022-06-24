@@ -1,19 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_launch/flutter_launch.dart';
+import 'package:maps_launcher/maps_launcher.dart';
+import 'package:midodaren_wo_mobile/models/review.dart';
 import 'package:midodaren_wo_mobile/models/user.dart';
+import 'package:midodaren_wo_mobile/presentation/widgets/review_widget.dart';
 import 'package:midodaren_wo_mobile/presentation/widgets/service_widget.dart';
 import 'package:midodaren_wo_mobile/presentation/widgets/shared_methods.dart';
 import 'package:midodaren_wo_mobile/resources/color_manager.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 final List<String> imgList = [
-  'https://images.unsplash.com/photo-1520342868574-5fa3804e551c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=6ff92caffcdd63681a35134a6770ed3b&auto=format&fit=crop&w=1951&q=80',
-  'https://images.unsplash.com/photo-1522205408450-add114ad53fe?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=368f45b0888aeb0b7b08e3a1084d3ede&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=94a1e718d89ca60a6337a6008341ca50&auto=format&fit=crop&w=1950&q=80',
-  'https://images.unsplash.com/photo-1523205771623-e0faa4d2813d?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=89719a0d55dd05e2deae4120227e6efc&auto=format&fit=crop&w=1953&q=80',
-  'https://images.unsplash.com/photo-1508704019882-f9cf40e475b4?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=8c6e5e3aba713b17aa1fe71ab4f0ae5b&auto=format&fit=crop&w=1352&q=80',
-  'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=a0c8d632e977f94e5d312d9893258f59&auto=format&fit=crop&w=1355&q=80'
+  'https://firebasestorage.googleapis.com/v0/b/midodaren-app-f1485.appspot.com/o/gallery%2FMNM02307%20(1).jpg?alt=media&token=a120aad4-337e-4204-92d0-ed46831ff8be',
+  'https://firebasestorage.googleapis.com/v0/b/midodaren-app-f1485.appspot.com/o/gallery%2FDSC09823%20(1).jpg?alt=media&token=c2da402b-f4b1-4fdb-9987-ce6646ab62d8',
+  'https://firebasestorage.googleapis.com/v0/b/midodaren-app-f1485.appspot.com/o/gallery%2FDSC06646%20(1).jpg?alt=media&token=7aba3ddc-3f07-48cd-890e-028f109b24e3',
+  'https://firebasestorage.googleapis.com/v0/b/midodaren-app-f1485.appspot.com/o/gallery%2FDSC04569%20(1).jpg?alt=media&token=faa25ad5-3382-48d0-8b15-9de9e007f4f5',
 ];
 
 class Home extends StatefulWidget {
@@ -99,15 +102,17 @@ class _HomeState extends State<Home> {
                       height: 100,
                       image: AssetImage('assets/logo_tulisan.png'),
                     ),
-                    CarouselSlider(
-                      options: CarouselOptions(
-                        autoPlay: true,
-                        aspectRatio: 2.0,
-                        enlargeCenterPage: true,
-                        enlargeStrategy: CenterPageEnlargeStrategy.height,
-                      ),
-                      items: imageSliders,
-                    ),
+                    widget.user.role == "admin"
+                        ? Container()
+                        : CarouselSlider(
+                            options: CarouselOptions(
+                              autoPlay: true,
+                              aspectRatio: 2.0,
+                              enlargeCenterPage: true,
+                              enlargeStrategy: CenterPageEnlargeStrategy.height,
+                            ),
+                            items: imageSliders,
+                          ),
                     const SizedBox(height: 20),
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -133,49 +138,55 @@ class _HomeState extends State<Home> {
                                     image: "assets/couple.png",
                                     name: "Paket Wedding",
                                   ),
-                                  InkWell(
-                                    onTap: () {
-                                      CommonSharedMethods.launchWhatsapp(
-                                          "6283848889803",
-                                          "Halo, kak Admin. Saya mau tanya tentang paket layanan.");
-                                    },
-                                    child: Card(
-                                      child: SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                0.2,
-                                        width:
-                                            MediaQuery.of(context).size.width *
-                                                0.25,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.center,
-                                          children: [
-                                            const SizedBox(height: 20),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(10.0),
-                                              child: Image(
-                                                width: 70,
-                                                height: 70,
-                                                image: AssetImage(
-                                                    "assets/consultant-services.png"),
+                                  widget.user.role == "admin"
+                                      ? Container()
+                                      : InkWell(
+                                          onTap: () {
+                                            // CommonSharedMethods.launchWhatsapp(
+                                            //     "083848889803",
+                                            //     "Halo, kak Admin. Saya mau tanya tentang paket layanan.");
+                                            launchWhatsApp();
+                                          },
+                                          child: Card(
+                                            child: SizedBox(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height *
+                                                  0.2,
+                                              width: MediaQuery.of(context)
+                                                      .size
+                                                      .width *
+                                                  0.25,
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.center,
+                                                children: [
+                                                  const SizedBox(height: 20),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            10.0),
+                                                    child: Image(
+                                                      width: 70,
+                                                      height: 70,
+                                                      image: AssetImage(
+                                                          "assets/consultant-services.png"),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding: const EdgeInsets
+                                                        .fromLTRB(10, 5, 10, 0),
+                                                    child: Text(
+                                                      "Konsultasi",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                    ),
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.fromLTRB(
-                                                      10, 5, 10, 0),
-                                              child: Text(
-                                                "Konsultasi",
-                                                textAlign: TextAlign.center,
-                                              ),
-                                            ),
-                                          ],
+                                          ),
                                         ),
-                                      ),
-                                    ),
-                                  ),
                                 ],
                               )
                             ],
@@ -273,14 +284,95 @@ class _HomeState extends State<Home> {
                                 ),
                                 title: const Text("Ulasan"),
                               ),
-                              Row(
-                                children: [],
-                              )
+                              getUlasan(),
                             ],
                           ),
                         ),
                       ),
                     ),
+                    widget.user.role == "admin"
+                        ? Container()
+                        : Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Card(
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(bottom: 15, left: 10),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    ListTile(
+                                      horizontalTitleGap: 0,
+                                      leading: Icon(
+                                        Icons.work,
+                                        color: ColorManager.primary,
+                                      ),
+                                      title: const Text("Office"),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 20),
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Midodaren Wedding Organizer",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .titleMedium
+                                                ?.copyWith(
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Text(
+                                            "0813-5723-3775",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodyText1,
+                                          ),
+                                          const SizedBox(height: 10),
+                                          Row(
+                                            children: [
+                                              const Icon(Icons.location_pin),
+                                              SizedBox(width: 20),
+                                              Expanded(
+                                                child: Text(
+                                                  "Perumahan Karanglo Indah Blok T-1, Kota Malang, Jawa Timur 65126",
+                                                  softWrap: true,
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                          const SizedBox(height: 15),
+                                          SizedBox(
+                                            width: double.infinity,
+                                            height: 40,
+                                            child: ElevatedButton.icon(
+                                              onPressed: () {
+                                                MapsLauncher.launchQuery(
+                                                    'Midodaren Wedding Organizer, Perumahan Karanglo Indah Blok T-1, Kota Malang, Jawa Timur 65126');
+                                                // launchMap(
+                                                //     "Midodaren Wedding Organizer, Perumahan Karanglo Indah Blok T-1, Kota Malang, Jawa Timur 65126");
+                                              },
+                                              icon:
+                                                  const Icon(Icons.directions),
+                                              label: const Text(
+                                                  "Buka di Google Maps"),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                     const SizedBox(height: 80),
                   ],
                 ),
@@ -290,5 +382,79 @@ class _HomeState extends State<Home> {
         ),
       ),
     );
+  }
+
+  final Stream<QuerySnapshot>? _reviewStream =
+      FirebaseFirestore.instance.collection('reviews').snapshots();
+
+  getUlasan() {
+    return StreamBuilder<QuerySnapshot>(
+      stream: _reviewStream,
+      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return const Center(
+            child: Text('Terjadi kesalahan.'),
+          );
+        }
+
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(
+                  color: ColorManager.primary,
+                ),
+                const SizedBox(height: 20),
+                const Text("Loading"),
+              ],
+            ),
+          );
+        }
+
+        if (snapshot.data!.docs.isNotEmpty) {
+          return Column(
+            children: snapshot.data!.docs
+                .map((DocumentSnapshot document) {
+                  ReviewModel rev = ReviewModel.fromFirestore(
+                      document as DocumentSnapshot<Map<String, dynamic>>);
+
+                  return ReviewWidget(review: rev);
+                })
+                .toList()
+                .cast(),
+          );
+        } else {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.error,
+                  color: Colors.red,
+                ),
+                const SizedBox(height: 20),
+                const Text("Tidak ada layanan ditemukan."),
+              ],
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  launchWhatsApp() async {
+    await FlutterLaunch.launchWhatsapp(
+        phone: "6283848889803",
+        message: "Halo, kak Admin. Saya mau tanya tentang paket layanan.");
+  }
+
+  void launchMap(String address) async {
+    String query = Uri.encodeComponent(address);
+    String googleUrl = "https://www.google.com/maps/search/?api=1&query=$query";
+
+    if (await canLaunchUrl(Uri.parse(googleUrl))) {
+      await launchUrl(Uri.parse(googleUrl));
+    }
   }
 }

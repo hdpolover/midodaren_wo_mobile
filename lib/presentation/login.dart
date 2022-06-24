@@ -96,10 +96,10 @@ class _LoginState extends State<Login> {
                       isLoading = true;
                     });
 
-                    AppUser user = await _auth.loginWithEmail(
-                        emailController.text, passwordController.text);
+                    try {
+                      AppUser user = await _auth.loginWithEmail(
+                          emailController.text, passwordController.text);
 
-                    if (user != null) {
                       _sharedMethods.saveUserLoginsDetails(user);
 
                       setState(() {
@@ -115,7 +115,7 @@ class _LoginState extends State<Login> {
                           ),
                         ),
                       );
-                    } else {
+                    } catch (e) {
                       setState(() {
                         isLoading = false;
                       });

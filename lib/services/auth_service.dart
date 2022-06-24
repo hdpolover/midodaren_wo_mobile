@@ -75,17 +75,21 @@ class Auth {
   }
 
   Future<AppUser> loginWithEmail(String email, String password) async {
-    final usersRef = db.collection("users").withConverter(
-        fromFirestore: AppUser.fromFirestore,
-        toFirestore: (AppUser user, _) => user.toFirestore());
-    final query = usersRef
-        .where("email", isEqualTo: email)
-        .where("password", isEqualTo: password);
+    try {
+      final usersRef = db.collection("users").withConverter(
+          fromFirestore: AppUser.fromFirestore,
+          toFirestore: (AppUser user, _) => user.toFirestore());
+      final query = usersRef
+          .where("email", isEqualTo: email)
+          .where("password", isEqualTo: password);
 
-    final docSnap = await query.get();
+      final docSnap = await query.get();
 
-    final user = docSnap.docs.first;
+      final user = docSnap.docs.first;
 
-    return user.data();
+      return user.data();
+    } catch (e) {
+      throw e;
+    }
   }
 }

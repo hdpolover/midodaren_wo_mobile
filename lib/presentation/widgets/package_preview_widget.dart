@@ -24,6 +24,13 @@ class PackagePreviewWidget extends StatelessWidget {
                         color: Colors.black,
                       ),
                 ),
+                const SizedBox(height: 5),
+                Text(
+                  "Disediakan oleh ${package.company}",
+                  style: Theme.of(context).textTheme.bodyText2?.copyWith(
+                        color: Colors.black,
+                      ),
+                ),
                 const SizedBox(height: 10),
                 Text(
                     "Rp. ${NumberFormat("###.0#", "en_US").format(package.price!)}"),

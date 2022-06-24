@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Package {
   String? id;
   String? title;
+  String? company;
   String? desc;
   double? price;
   String? serviceCategory;
@@ -14,6 +15,7 @@ class Package {
     this.id,
     this.title,
     this.desc,
+    this.company,
     this.price,
     this.serviceCategory,
     this.imageUrl1,
@@ -28,6 +30,7 @@ class Package {
       id: data?['id'],
       title: data?['title'],
       desc: data?['desc'],
+      company: data?['company'],
       price: double.parse(data?['price']),
       serviceCategory: data?['serviceCategory'],
       imageUrl1: data?['imageUrl1'],
