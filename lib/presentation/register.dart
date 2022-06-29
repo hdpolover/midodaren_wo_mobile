@@ -88,7 +88,7 @@ class _RegisterState extends State<Register> {
                 padding: const EdgeInsets.all(10),
                 child: TextFormField(
                   controller: addressController,
-                  keyboardType: TextInputType.phone,
+                  keyboardType: TextInputType.text,
                   decoration: const InputDecoration(
                     prefixIcon: Icon(Icons.phone),
                     border: OutlineInputBorder(),
