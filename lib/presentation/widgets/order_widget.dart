@@ -44,7 +44,9 @@ class OrderWidget extends StatelessWidget {
                       ? Colors.green
                       : order.status == "selesai"
                           ? Colors.grey
-                          : Colors.yellow,
+                          : order.status == "ditolak"
+                              ? Colors.red
+                              : Colors.yellow,
                 ),
               ),
               const SizedBox(height: 10),

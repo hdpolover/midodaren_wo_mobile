@@ -77,6 +77,9 @@ class _OrderDetailsState extends State<OrderDetails> {
         });
   }
 
+  TextEditingController _textFieldController = TextEditingController();
+  String? valueText;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -182,33 +185,116 @@ class _OrderDetailsState extends State<OrderDetails> {
                 ),
               ),
               const SizedBox(height: 20),
+              widget.order.status == "ditolak"
+                  ? const Text(
+                      "Catatan Penolakan",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    )
+                  : Container(),
+              const SizedBox(height: 10),
+              widget.order.status == "ditolak"
+                  ? Text(widget.order.catatanTolak!)
+                  : Container(),
+              const SizedBox(height: 20),
               widget.role == "admin"
-                  ? widget.order.status == "selesai"
+                  ? widget.order.status == "selesai" ||
+                          widget.order.status == "ditolak"
                       ? Container()
-                      : SizedBox(
-                          width: double.infinity,
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              if (widget.order.status ==
-                                  "menunggu konfirmasi") {
-                                updateStatus("terkonfirmasi");
-                              } else if (widget.order.status ==
-                                  "terkonfirmasi") {
-                                updateStatus("selesai");
-                              }
+                      : Column(
+                          children: [
+                            SizedBox(
+                              width: double.infinity,
+                              height: 50,
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  if (widget.order.status ==
+                                      "menunggu konfirmasi") {
+                                    updateStatus("terkonfirmasi");
+                                  } else if (widget.order.status ==
+                                      "terkonfirmasi") {
+                                    updateStatus("selesai");
+                                  }
 
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                      content: Text(
-                                          "Berhasil memperbarui status pesanan.")));
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                          content: Text(
+                                              "Berhasil memperbarui status pesanan.")));
 
-                              Navigator.of(context).pop();
-                            },
-                            child: widget.order.status == "menunggu konfirmasi"
-                                ? const Text("Konfirmasi")
-                                : const Text("Selesaikan"),
-                          ),
+                                  Navigator.of(context).pop();
+                                },
+                                child:
+                                    widget.order.status == "menunggu konfirmasi"
+                                        ? const Text("Konfirmasi")
+                                        : const Text("Selesaikan"),
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            SizedBox(
+                              width: double.infinity,
+                              height: 50,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  primary: Colors.red, // background
+                                  onPrimary: Colors.white, // foreground
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return AlertDialog(
+                                          title:
+                                              Text('Catatan Penolakan Pesanan'),
+                                          content: TextField(
+                                            onChanged: (value) {
+                                              setState(() {
+                                                valueText = value;
+                                              });
+                                            },
+                                            controller: _textFieldController,
+                                            decoration: const InputDecoration(
+                                                hintText: "Masukan catatan"),
+                                          ),
+                                          actions: <Widget>[
+                                            ElevatedButton(
+                                              child: Text('BATAL'),
+                                              onPressed: () {
+                                                setState(() {
+                                                  Navigator.pop(context);
+                                                });
+                                              },
+                                            ),
+                                            ElevatedButton(
+                                              style: ElevatedButton.styleFrom(
+                                                primary:
+                                                    Colors.red, // background
+                                                onPrimary:
+                                                    Colors.white, // foreground
+                                              ),
+                                              child: Text('SIMPAN'),
+                                              onPressed: () {
+                                                setState(() {
+                                                  updateStatus("ditolak");
+                                                  tambahCatatanTolak(
+                                                      valueText!);
+
+                                                  ScaffoldMessenger.of(context)
+                                                      .showSnackBar(const SnackBar(
+                                                          content: Text(
+                                                              "Berhasil memperbarui status pesanan.")));
+
+                                                  Navigator.pop(context);
+                                                  Navigator.pop(context);
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        );
+                                      });
+                                },
+                                child: const Text("Tolak Pesanan"),
+                              ),
+                            ),
+                          ],
                         )
                   : Container(),
             ],
@@ -223,6 +309,15 @@ class _OrderDetailsState extends State<OrderDetails> {
     collection
         .doc(widget.order.id)
         .update({'status': status}) // <-- Updated data
+        .then((_) => print('Success'))
+        .catchError((error) => print('Failed: $error'));
+  }
+
+  void tambahCatatanTolak(String cat) {
+    var collection = FirebaseFirestore.instance.collection('orders');
+    collection
+        .doc(widget.order.id)
+        .update({'catatanTolak': cat}) // <-- Updated data
         .then((_) => print('Success'))
         .catchError((error) => print('Failed: $error'));
   }

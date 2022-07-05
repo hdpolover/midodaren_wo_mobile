@@ -10,6 +10,7 @@ class Package {
   String? imageUrl1;
   String? imageUrl2;
   String? imageUrl3;
+  String? status;
 
   Package({
     this.id,
@@ -21,6 +22,7 @@ class Package {
     this.imageUrl1,
     this.imageUrl2,
     this.imageUrl3,
+    this.status,
   });
 
   factory Package.fromFirestore(
@@ -36,6 +38,7 @@ class Package {
       imageUrl1: data?['imageUrl1'],
       imageUrl2: data?['imageUrl2'],
       imageUrl3: data?['imageUrl3'],
+      status: data?['status'],
     );
   }
 }

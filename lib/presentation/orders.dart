@@ -33,7 +33,10 @@ class _OrdersState extends State<Orders> {
   @override
   void initState() {
     super.initState();
-    _orderStream = FirebaseFirestore.instance.collection('orders').snapshots();
+    _orderStream = FirebaseFirestore.instance
+        .collection('orders')
+        .where("userId", isEqualTo: widget.user.userId)
+        .snapshots();
   }
 
   @override

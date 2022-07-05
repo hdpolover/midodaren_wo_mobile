@@ -11,6 +11,8 @@ class PackageOrder {
   String? paymentProof;
   String? note;
   String? status;
+  String? catatanTolak;
+  String? userId;
 
   PackageOrder({
     this.id,
@@ -23,6 +25,8 @@ class PackageOrder {
     this.note,
     this.status,
     this.orderDate,
+    this.catatanTolak,
+    this.userId,
   });
 
   factory PackageOrder.fromFirestore(
@@ -39,6 +43,8 @@ class PackageOrder {
       note: data?['note'],
       status: data?['status'],
       orderDate: data?['orderDate'],
+      catatanTolak: data?['catatanTolak'],
+      userId: data?['userId'],
     );
   }
 
@@ -54,6 +60,8 @@ class PackageOrder {
       if (status != null) "status": status,
       if (orderDate != null) "orderDate": orderDate,
       if (paymentProof != null) "paymentProof": paymentProof,
+      if (catatanTolak != null) "catatanTolak": catatanTolak,
+      if (userId != null) "userId": userId,
     };
   }
 }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
@@ -215,7 +216,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                           height: MediaQuery.of(context)
                                                   .size
                                                   .height *
-                                              0.47,
+                                              0.5,
                                           padding: const EdgeInsets.all(20),
                                           margin: const EdgeInsets.only(
                                               top: 150, left: 32, right: 32),
@@ -240,7 +241,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                   padding:
                                                       const EdgeInsets.all(10),
                                                   child: Text(
-                                                    "Yakin untuk memesan? Cek ketersediaan paket ke Admin.",
+                                                    "Yakin ingin menonaktifkan layanan ini? Aksi ini tidak dapat diulang.",
                                                     textAlign: TextAlign.center,
                                                     style: Theme.of(context)
                                                         .textTheme
@@ -258,7 +259,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                     height: 55,
                                                     child: OutlinedButton(
                                                       child: const Text(
-                                                        "PESAN",
+                                                        "NONAKTIFKAN",
                                                         style: TextStyle(
                                                             color:
                                                                 Colors.white),
@@ -269,21 +270,38 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                                   ColorManager
                                                                       .primary),
                                                       onPressed: () {
+                                                        var collection =
+                                                            FirebaseFirestore
+                                                                .instance
+                                                                .collection(
+                                                                    'packages');
+
+                                                        final data =
+                                                            <String, dynamic>{
+                                                          "status": "nonaktif",
+                                                        };
+                                                        collection
+                                                            .doc(widget
+                                                                .package.id)
+                                                            .update(
+                                                                data) // <-- Updated data
+                                                            .then((_) => print(
+                                                                'Success'))
+                                                            .catchError(
+                                                                (error) => print(
+                                                                    'Failed: $error'));
+
+                                                        ScaffoldMessenger.of(
+                                                                context)
+                                                            .showSnackBar(
+                                                                const SnackBar(
+                                                                    content: Text(
+                                                                        "Berhasil menonaktifkan layanan.")));
+
                                                         Navigator.of(context)
                                                             .pop();
-
-                                                        pushNewScreen(
-                                                          context,
-                                                          screen: OrderPackage(
-                                                            package:
-                                                                widget.package,
-                                                          ),
-                                                          withNavBar:
-                                                              false, // OPTIONAL VALUE. True by default.
-                                                          pageTransitionAnimation:
-                                                              PageTransitionAnimation
-                                                                  .fade,
-                                                        );
+                                                        Navigator.of(context)
+                                                            .pop();
                                                       },
                                                     ),
                                                   ),
@@ -303,8 +321,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                           backgroundColor:
                                                               Colors
                                                                   .transparent),
-                                                      child: Text(
-                                                          "KONSULTASI ADMIN",
+                                                      child: Text("BATAL",
                                                           style: Theme.of(
                                                                   context)
                                                               .textTheme
@@ -330,7 +347,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                     },
                                   );
                                 },
-                                label: const Text('Hapus'),
+                                label: const Text('Nonaktifkan'),
                                 icon: const Icon(Icons.delete),
                                 style: ElevatedButton.styleFrom(
                                   primary: Colors.red, // background

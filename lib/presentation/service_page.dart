@@ -26,6 +26,7 @@ class _ServicePageState extends State<ServicePage> {
     _packageStream = FirebaseFirestore.instance
         .collection('packages')
         .where("serviceCategory", isEqualTo: widget.name!)
+        .where("status", isEqualTo: "aktif")
         .snapshots();
   }
 
