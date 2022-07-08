@@ -2,14 +2,15 @@ import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:midodaren_wo_mobile/models/package.dart';
+import 'package:midodaren_wo_mobile/models/user.dart';
 import 'package:midodaren_wo_mobile/presentation/service_details.dart';
 import 'package:midodaren_wo_mobile/presentation/service_page.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 class PackageWidget extends StatelessWidget {
   Package package;
-  String role;
-  PackageWidget({required this.role, required this.package, Key? key})
+  AppUser user;
+  PackageWidget({required this.user, required this.package, Key? key})
       : super(key: key);
 
   @override
@@ -19,7 +20,7 @@ class PackageWidget extends StatelessWidget {
         pushNewScreen(
           context,
           screen: ServiceDetails(
-            role: role,
+            user: user,
             package: package,
           ),
           withNavBar: false,
