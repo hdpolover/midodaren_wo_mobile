@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:midodaren_wo_mobile/models/package.dart';
+import 'package:midodaren_wo_mobile/models/user.dart';
 import 'package:midodaren_wo_mobile/presentation/add_service.dart';
 import 'package:midodaren_wo_mobile/presentation/widgets/package_widget.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -9,8 +10,8 @@ import '../resources/color_manager.dart';
 
 class ServicePage extends StatefulWidget {
   String? name;
-  String role;
-  ServicePage({required this.role, required this.name, Key? key})
+  AppUser user;
+  ServicePage({required this.user, required this.name, Key? key})
       : super(key: key);
 
   @override
@@ -71,7 +72,7 @@ class _ServicePageState extends State<ServicePage> {
                     Package package = Package.fromFirestore(
                         document as DocumentSnapshot<Map<String, dynamic>>);
 
-                    return PackageWidget(role: widget.role, package: package);
+                    return PackageWidget(user: widget.user, package: package);
                   })
                   .toList()
                   .cast(),
@@ -93,7 +94,7 @@ class _ServicePageState extends State<ServicePage> {
           }
         },
       ),
-      floatingActionButton: widget.role == "admin"
+      floatingActionButton: widget.user.role == "admin"
           ? FloatingActionButton.extended(
               onPressed: () {
                 pushNewScreen(

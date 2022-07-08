@@ -5,6 +5,7 @@ import 'package:flutter_image_slideshow/flutter_image_slideshow.dart';
 import 'package:flutter_launch/flutter_launch.dart';
 import 'package:intl/intl.dart';
 import 'package:midodaren_wo_mobile/models/package.dart';
+import 'package:midodaren_wo_mobile/models/user.dart';
 import 'package:midodaren_wo_mobile/presentation/edit_service.dart';
 import 'package:midodaren_wo_mobile/presentation/order_package.dart';
 import 'package:midodaren_wo_mobile/presentation/widgets/shared_methods.dart';
@@ -14,8 +15,8 @@ import '../resources/color_manager.dart';
 
 class ServiceDetails extends StatefulWidget {
   Package package;
-  String role;
-  ServiceDetails({required this.role, required this.package, Key? key})
+  AppUser user;
+  ServiceDetails({required this.user, required this.package, Key? key})
       : super(key: key);
 
   @override
@@ -170,7 +171,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
               Container(
                 width: double.infinity,
                 height: 50,
-                child: widget.role == "admin"
+                child: widget.user.role == "admin"
                     ? Row(
                         children: [
                           Expanded(

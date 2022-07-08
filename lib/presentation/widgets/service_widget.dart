@@ -20,7 +20,7 @@ class ServiceWidget extends StatelessWidget {
         pushNewScreen(
           context,
           screen: ServicePage(
-            role: user.role!,
+            user: user,
             name: name,
           ),
           withNavBar: false, // OPTIONAL VALUE. True by default.

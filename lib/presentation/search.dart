@@ -102,8 +102,7 @@ class _SearchState extends State<Search> {
                     Package package = Package.fromFirestore(
                         document as DocumentSnapshot<Map<String, dynamic>>);
 
-                    return PackageWidget(
-                        role: widget.user.role!, package: package);
+                    return PackageWidget(user: widget.user, package: package);
                   })
                   .toList()
                   .cast(),
