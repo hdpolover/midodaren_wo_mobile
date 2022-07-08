@@ -309,6 +309,7 @@ class _AddServiceState extends State<AddService> {
           "imageUrl1": url1,
           "imageUrl2": "-",
           "imageUrl3": "-",
+          "status": "aktif"
         };
 
         package.set(data);
@@ -323,6 +324,7 @@ class _AddServiceState extends State<AddService> {
           "imageUrl1": url1,
           "imageUrl2": url2,
           "imageUrl3": "-",
+          "status": "aktif"
         };
 
         package.set(data);
@@ -337,6 +339,7 @@ class _AddServiceState extends State<AddService> {
           "imageUrl1": url1,
           "imageUrl2": url2,
           "imageUrl3": url3,
+          "status": "aktif"
         };
 
         package.set(data);

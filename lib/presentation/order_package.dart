@@ -387,7 +387,8 @@ class _OrderPackageState extends State<OrderPackage> {
         "paymentProof": url,
         "date": dateController.text,
         "orderDate": tdata,
-        "status": "menunggu konfirmasi"
+        "status": "menunggu konfirmasi",
+        "catatanTolak": "-"
       };
 
       packageOrder.set(data);
