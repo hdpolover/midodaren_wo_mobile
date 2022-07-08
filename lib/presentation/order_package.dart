@@ -6,6 +6,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:midodaren_wo_mobile/models/package.dart';
+import 'package:midodaren_wo_mobile/models/user.dart';
 import 'package:midodaren_wo_mobile/presentation/widgets/package_preview_widget.dart';
 import 'package:midodaren_wo_mobile/presentation/widgets/package_widget.dart';
 
@@ -13,7 +14,9 @@ import '../resources/color_manager.dart';
 
 class OrderPackage extends StatefulWidget {
   Package package;
-  OrderPackage({required this.package, Key? key}) : super(key: key);
+  AppUser user;
+  OrderPackage({required this.user, required this.package, Key? key})
+      : super(key: key);
 
   @override
   State<OrderPackage> createState() => _OrderPackageState();
@@ -379,6 +382,7 @@ class _OrderPackageState extends State<OrderPackage> {
     if (url != null) {
       final data = <String, dynamic>{
         'id': packageOrder.id,
+        "userId": widget.user.userId,
         "packageId": widget.package.id,
         "fullName": nameController.text,
         "phoneNumber": phoneController.text,

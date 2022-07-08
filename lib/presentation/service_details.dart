@@ -459,6 +459,7 @@ class _ServiceDetailsState extends State<ServiceDetails> {
                                                         pushNewScreen(
                                                           context,
                                                           screen: OrderPackage(
+                                                            user: widget.user,
                                                             package:
                                                                 widget.package,
                                                           ),
